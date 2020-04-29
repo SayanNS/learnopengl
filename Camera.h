@@ -14,12 +14,15 @@ public:
 	~Camera();
 
 	float* GetViewMatrix();
+	float* GetViewPosition();
 
 	void ProcessKeyboardInput(const Uint8* state);
 
 	void ProcessMouseInput(int x, int y);
 
 	void UpdateViewMatrix(Uint32 ticks);
+
+	bool IsCameraStateChanged() { return isCameraStateChanged; }
 
 private:
 	short horDirection;
@@ -32,5 +35,7 @@ private:
 	int pitch;
 
 	float* viewMatrix;
+
+	bool isCameraStateChanged;
 };
 

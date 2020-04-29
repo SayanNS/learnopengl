@@ -2,6 +2,8 @@
 
 Camera::Camera()
 {
+	isCameraStateChanged = true;
+
 	horDirection = 0;
 	verDirection = 0;
 
@@ -28,6 +30,8 @@ Camera::~Camera()
 
 float* Camera::GetViewMatrix()
 {
+	isCameraStateChanged = false;
+
 	glm::vec3 k = *direction;
 	glm::vec3 i = glm::normalize(glm::cross(glm::vec3(0, 1, 0), k));
 	glm::vec3 j = glm::normalize(glm::cross(k, i));
@@ -53,14 +57,26 @@ float* Camera::GetViewMatrix()
 	return viewMatrix;
 }
 
+float* Camera::GetViewPosition()
+{
+	return (float*)eye;
+}
+
 void Camera::ProcessKeyboardInput(const Uint8* state)
 {
 	horDirection = state[SDL_SCANCODE_D] - state[SDL_SCANCODE_A];
 	verDirection = state[SDL_SCANCODE_W] - state[SDL_SCANCODE_S];
+
+	if (horDirection != 0 || verDirection != 0)
+	{
+		isCameraStateChanged = true;
+	}
 }
 
 void Camera::ProcessMouseInput(int x, int y)
 {
+	isCameraStateChanged = true;
+
 	this->yaw -= x;
 	this->pitch -= y;
 	
@@ -79,4 +95,4 @@ void Camera::UpdateViewMatrix(Uint32 ticks)
 		float temp = (k[index] * verDirection * VER_SPEED + i[index] * horDirection * HOR_SPEED) * ticks;
 		(*eye)[index] += temp;
 	}
-} 
+}
