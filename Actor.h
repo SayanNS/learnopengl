@@ -5,8 +5,8 @@
 class Actor
 {
 public:
-	Actor(class Shader*, class VertexArray*);
-	void Draw();
+	Actor(class Game* game);
+
 private:
 	
 	class Shader* mShader;
